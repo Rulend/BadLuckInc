@@ -26,6 +26,7 @@ public class AudioManager : MonoBehaviour
 		NumSoundEffects
 	}
 
+
 	private void Awake()
 	{
 		if ( m_Instance == null )

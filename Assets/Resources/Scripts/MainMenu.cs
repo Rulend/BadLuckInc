@@ -5,10 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+	[SerializeField] private FadeElement	m_ScreenFade;
+	[SerializeField] private AudioSource	m_StartGameSound;
 
 	public void ButtonStartGame()
 	{
-		SceneManager.LoadScene( 1 );
+		StartCoroutine( LoadGame() );
 	}
 
 	public void ButtonExit()
@@ -19,5 +21,15 @@ public class MainMenu : MonoBehaviour
 	public void Options()
 	{
 
+	}
+
+	private IEnumerator LoadGame()
+	{
+		m_ScreenFade.FadeIn();
+		m_StartGameSound.enabled = true;
+
+		yield return new WaitForSeconds( 6 );
+
+		SceneManager.LoadScene( 1 );
 	}
 }

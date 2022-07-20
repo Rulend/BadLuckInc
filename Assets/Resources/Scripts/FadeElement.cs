@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
@@ -5,45 +6,59 @@ using UnityEngine.Events;
 // Put this component on the element that has the image.
 public class FadeElement : MonoBehaviour
 {
-	[SerializeField]	private float		m_FadeDuration		= 1.0f;
-						private float		m_CurrentFadeTime	= 1.0f;
-						private Image		m_ImageToFade;
-						private Color		m_ColorFade;
-						private bool		m_FadingOut			= true;
-	[SerializeField]	private UnityEvent	m_StartDayEndScreen;
+	[SerializeField]	private bool			m_StartOnPlay		= false;
+	[SerializeField]	private float			m_FadeDuration		= 1.0f;
+						private float			m_CurrentFadeTime	= 0.0f;
+	[SerializeField]	private float			m_Delay				= 0.0f;
+						private Image			m_ImageToFade;
+						private Color			m_ColorFade;
+	[SerializeField]	private bool			m_FadeOut			= true;
+						protected UnityEvent	m_FadedToFullEvent;	// These two are not Serialized, since that would mean you could use them in the inspector. That makes it hard to keep track of where functions are called from.
+						protected UnityEvent	m_FadedToZeroEvent;	// These two are not Serialized, since that would mean you could use them in the inspector. That makes it hard to keep track of where functions are called from.
 
-	private void Start()
+	protected virtual void Start()
 	{
-		m_CurrentFadeTime	= m_FadeDuration;
+		if ( m_FadeOut )
+			m_CurrentFadeTime	= m_FadeDuration;
+
 		m_ImageToFade		= GetComponent<Image>();
 		m_ColorFade			= m_ImageToFade.color;
 
-		DayManager.Instance.DayEndDisplayperformanceEvent += FadeIn;
-		DayManager.Instance.NextDayEvent += FadeOut;
+		enabled = false;
+
+		if ( m_StartOnPlay )
+			StartCoroutine( StartFade() );
 	}
 
 	// Update is called once per frame
 	void Update()
     {
-		m_ColorFade.a = ( m_CurrentFadeTime / m_FadeDuration );
+		m_ColorFade.a		= ( m_CurrentFadeTime / m_FadeDuration );
+		m_ImageToFade.color = m_ColorFade;
 
-		if ( m_FadingOut )
+		if ( m_FadeOut )
 		{
 			m_CurrentFadeTime -= Time.deltaTime;
-			m_ImageToFade.color = m_ColorFade;
 
 			if ( m_CurrentFadeTime < 0.0f )
-				gameObject.SetActive( false );
+			{
+				enabled					= false;
+				m_ImageToFade.enabled	= false;
+
+				if ( m_FadedToZeroEvent != null )
+					m_FadedToZeroEvent.Invoke();
+			}
 		}
 		else
 		{
 			m_CurrentFadeTime += Time.deltaTime;
-			m_ImageToFade.color = m_ColorFade;
 
 			if ( m_CurrentFadeTime > m_FadeDuration )
 			{
 				enabled = false;
-				m_StartDayEndScreen.Invoke();
+
+				if ( m_FadedToFullEvent != null )
+					m_FadedToFullEvent.Invoke();
 			}
 		}
     }
@@ -51,16 +66,24 @@ public class FadeElement : MonoBehaviour
 
 	public void FadeIn()
 	{
-		gameObject.SetActive( true );
+		m_FadeOut = false;
 
-		m_FadingOut = false;
+		StartCoroutine( StartFade() );
 	}
 
 	// Called from UI button, 0 references
 	public void FadeOut()
 	{
-		enabled = true;
+		m_FadeOut = true;
 
-		m_FadingOut = true;
+		StartCoroutine( StartFade() );
+	}
+
+	private IEnumerator StartFade()
+	{
+		yield return new WaitForSeconds( m_Delay );
+
+		enabled					= true;
+		m_ImageToFade.enabled	= true;
 	}
 }
