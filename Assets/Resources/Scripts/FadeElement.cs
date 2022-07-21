@@ -10,8 +10,8 @@ public class FadeElement : MonoBehaviour
 	[SerializeField]	private float			m_FadeDuration		= 1.0f;
 						private float			m_CurrentFadeTime	= 0.0f;
 	[SerializeField]	private float			m_Delay				= 0.0f;
-						private Image			m_ImageToFade;
-						private Color			m_ColorFade;
+						protected Image			m_ImageToFade;
+						protected Color			m_ColorFade;
 	[SerializeField]	private bool			m_FadeOut			= true;
 						protected UnityEvent	m_FadedToFullEvent;	// These two are not Serialized, since that would mean you could use them in the inspector. That makes it hard to keep track of where functions are called from.
 						protected UnityEvent	m_FadedToZeroEvent;	// These two are not Serialized, since that would mean you could use them in the inspector. That makes it hard to keep track of where functions are called from.

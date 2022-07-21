@@ -17,4 +17,13 @@ public class UI_FullscreenElement : FadeElement
 		m_FadedToFullEvent = new UnityEngine.Events.UnityEvent();
 		m_FadedToFullEvent.AddListener( m_EODF.Activate );
 	}
+
+	// A function that instantly turns on/off the fullscreened UI.
+	public void InstantChange( bool _Active )
+	{
+		enabled					= false;
+		m_ImageToFade.enabled	= _Active;
+		m_ImageToFade.color		= m_ColorFade;
+
+	}
 }

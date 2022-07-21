@@ -16,9 +16,9 @@ public class Shutter : MovingCollisionCheckObject
 		else
 			SetTargetTransform( m_ShutterClosedPoint );
 
-		AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.HandScan );
-		AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.ShutterOpen );
-		AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.ShutterRoll );
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.HandScan );
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ShutterOpen );
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ShutterRoll );
 	}
 
 
@@ -32,8 +32,8 @@ public class Shutter : MovingCollisionCheckObject
 			return;
 
 		base.OnTriggerEnter2D( _Collider );
-		AudioManager.Instance.StopSoundEffect( AudioManager.ESound.ShutterRoll );
-		AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.ShutterClose );
+		AudioManager.Instance.StopSoundEffect( AudioManager.ESoundEnvironment.ShutterRoll );
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ShutterClose );
 
 		if ( !m_IsOpened )
 		{
