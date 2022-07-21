@@ -47,7 +47,7 @@ public class ButtonManager : MonoBehaviour
 	// This is for the gun, which was supposed to do something else, but for now it will be the exit button.
 	public void ButtonExit()
 	{
-		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.GunShot );
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.GunShot );
 		SceneManager.LoadScene( 0 );
 		// Todo:: add fade to black transition
 	}
@@ -55,7 +55,7 @@ public class ButtonManager : MonoBehaviour
 
 	public void ButtonPlantation()
 	{
-		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.ButtonPress );
 
 		if ( !m_AllowActions )
 			return;
@@ -66,7 +66,7 @@ public class ButtonManager : MonoBehaviour
 
 	public void ButtonChamber()
 	{
-		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.ButtonPress );
 
 		if ( !m_AllowActions )
 			return;
@@ -85,7 +85,7 @@ public class ButtonManager : MonoBehaviour
 
 	public void ButtonScan()
 	{
-		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.ButtonPress );
 
 		if ( !m_AllowActions )
 			return;
@@ -95,7 +95,7 @@ public class ButtonManager : MonoBehaviour
 
 	public void ButtonExtra()
 	{
-		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.ButtonPress );
 
 		if ( !m_AllowActions )
 			return;
@@ -106,7 +106,7 @@ public class ButtonManager : MonoBehaviour
 
 	public void ButtonRehab()
 	{
-		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.ButtonPress );
 
 		if ( !m_AllowActions )
 			return;
@@ -118,7 +118,7 @@ public class ButtonManager : MonoBehaviour
 
 	public void ButtonGraveYard()
 	{
-		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.ButtonPress );
 
 		if ( !m_AllowActions )
 			return;
@@ -129,7 +129,7 @@ public class ButtonManager : MonoBehaviour
 
 	public void ButtonResearchInstitute() // Should have called it Lab 
 	{
-		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.ButtonPress );
 
 		if ( !m_AllowActions )
 			return;

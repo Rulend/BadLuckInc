@@ -24,9 +24,8 @@ public class DayManager : MonoBehaviour
 
 	[SerializeField]		private List<Day>		m_Days;
 	[SerializeField]		private Text			m_TimeDisplay;
-	[SerializeField]		private EndingScreen	m_EndingScreen;
-	[SerializeField]		private GameObject		m_VictorySlidesParent;
-	[SerializeField]		private GameObject		m_DefeatSlidesParent;
+	[SerializeField]		private EndingScreen	m_VictoryScreen;
+	[SerializeField]		private EndingScreen	m_DefeatScreen;
 							private float			m_DayTimeLeft;
 							private int				m_CurrentDay = 0;
 
@@ -114,13 +113,13 @@ public class DayManager : MonoBehaviour
 
 		if ( ScoreManager.Instance.PlayerCredits < 0 )
 		{
-			m_EndingScreen.Activate( m_DefeatSlidesParent );
+			m_DefeatScreen.Activate();
 			return;
 		}
 
 		if ( m_CurrentDay >= m_Days.Count )
 		{
-			m_EndingScreen.Activate( m_VictorySlidesParent );
+			m_VictoryScreen.Activate();
 			return;
 		}
 

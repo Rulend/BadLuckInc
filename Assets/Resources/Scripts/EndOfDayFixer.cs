@@ -142,7 +142,12 @@ public class EndOfDayFixer : MonoBehaviour
 				{
 					m_LetterCooldownTimeLeft = m_LetterCooldownDuration;
 
-					AudioManager.Instance.PlayVoice( AudioManager.ESoundVoice.BadLuckInc );
+					int RandomSound = Random.Range( 0, 2 );
+
+					if ( RandomSound == 0 )
+						AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.VoiceSpeaking1 );
+					else
+						AudioManager.Instance.PlaySoundEffect( AudioManager.ESound.VoiceSpeaking2 );
 				}
 
 				m_CurrentText.text += AddedChar;
