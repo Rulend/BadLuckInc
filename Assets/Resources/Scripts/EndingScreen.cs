@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// TODO FIX THIS CLASS AND ITS SHIT
 public class EndingScreen : MonoBehaviour
 {
 	private struct SSlide 
@@ -14,23 +13,23 @@ public class EndingScreen : MonoBehaviour
 
 	[SerializeField] private Button m_NextSlideButton;
 
-	[SerializeField] private float m_LetterCooldownDuration = 0.048f;
-	private float m_LetterCooldownTimeLeft;
+	[SerializeField] private float	m_LetterCooldownDuration = 0.048f;
+	private float					m_LetterCooldownTimeLeft;
 	
-	private GameObject	m_SlidesParent;
+	private GameObject				m_SlidesParent;
 
-	private Text		m_CurrentText;
-	private string		m_CurrentMessage;
+	private Text					m_CurrentText;
+	private string					m_CurrentMessage;
 
 
-	private SSlide[]	m_Slides;
-	private int			m_SlideIndex = 0;
-	private int			m_MessageIndex;
+	private SSlide[]				m_Slides;
+	private int						m_SlideIndex = 0;
+	private int						m_MessageIndex;
 
 
 	private void Awake()
 	{
-		enabled = false;
+		enabled = false; // Turn off the component since we don't want to run the update function.
 	}
 
 
@@ -56,6 +55,8 @@ public class EndingScreen : MonoBehaviour
 			m_Slides[ ChildIndex ] = NewSlide;
 		}
 
+
+		m_SlideIndex = 0;
 
 		m_SlidesParent.transform.GetChild( m_SlideIndex ).gameObject.SetActive( true );
 		m_CurrentText		= m_Slides[ m_SlideIndex ].m_Texts[ m_MessageIndex ];
@@ -87,7 +88,7 @@ public class EndingScreen : MonoBehaviour
 					AudioManager.Instance.PlayVoice( AudioManager.ESoundVoice.BadLuckInc );
 				}
 				else if ( AddedChar == '.' )
-					m_LetterCooldownTimeLeft = 2 * m_LetterCooldownDuration;
+					m_LetterCooldownTimeLeft = m_LetterCooldownDuration * 3.0f;
 
 				m_CurrentText.text += AddedChar;
 			}
@@ -117,7 +118,7 @@ public class EndingScreen : MonoBehaviour
 
 			m_MessageIndex = 0;
 
-			m_CurrentText		= m_Slides[ m_SlideIndex ].m_Texts[m_MessageIndex];
+			m_CurrentText		= m_Slides[ m_SlideIndex ].m_Texts[ m_MessageIndex ];
 			m_CurrentMessage	= m_Slides[ m_SlideIndex ].m_Messages[ m_MessageIndex ];
 
 			m_SlidesParent.transform.GetChild( m_SlideIndex - 1 ).gameObject.SetActive( false );

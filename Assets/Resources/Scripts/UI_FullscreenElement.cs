@@ -24,6 +24,5 @@ public class UI_FullscreenElement : FadeElement
 		enabled					= false;
 		m_ImageToFade.enabled	= _Active;
 		m_ImageToFade.color		= m_ColorFade;
-
 	}
 }

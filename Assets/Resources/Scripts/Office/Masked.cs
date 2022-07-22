@@ -12,7 +12,7 @@ public class Masked : MonoBehaviour
 		Plantation		,	// The plantation facility
 		Research		,	// The research facility
 		Graveyard		,	// The graveyard
-		Rehabilitation	,	// The rehabilitation facility
+		Rehab			,	// The rehabilitation facility
 	}
 
 	[System.Serializable]
@@ -33,6 +33,9 @@ public class Masked : MonoBehaviour
 	[SerializeField] private Transform m_Office;
 	[SerializeField] private Transform m_Plantation;
 	[SerializeField] private Transform m_Chamber;
+	[SerializeField] private Transform m_Rehab;
+	[SerializeField] private Transform m_Graveyard;
+	[SerializeField] private Transform m_ResearchLab;
 
 
 	private MovingCollisionCheckObject m_rMovingComponent;
@@ -76,15 +79,15 @@ public class Masked : MonoBehaviour
 				NewTargetTransform = m_Plantation;
 				break;
 			case EFacility.Research:
-				//NewTargetTransform = m_Research;
+				NewTargetTransform = m_ResearchLab;
 				break;
 			case EFacility.Graveyard:
-				//NewTargetTransform = m_Graveyard;
+				NewTargetTransform = m_Graveyard;
 				break;
-			case EFacility.Rehabilitation:
+			case EFacility.Rehab:
+				NewTargetTransform = m_Rehab;
 				break;
 		}
-
 
 		m_rMovingComponent.SetTargetTransform( NewTargetTransform );
 	}

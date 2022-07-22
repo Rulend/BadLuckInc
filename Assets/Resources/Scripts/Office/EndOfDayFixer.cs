@@ -195,5 +195,4 @@ public class EndOfDayFixer : MonoBehaviour
 
 		m_NextSlideButton.gameObject.SetActive( false ); // Prevent the button from being clicked multiple times
 	}
-
 }

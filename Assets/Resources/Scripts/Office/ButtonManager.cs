@@ -9,8 +9,10 @@ public class ButtonManager : MonoBehaviour
 	private static	ButtonManager m_Instance;
 	public static	ButtonManager Instance => m_Instance;
 
-	[SerializeField] private Shutter	m_Shutter;
-	[SerializeField] private Button		m_ShutterButton;
+	[SerializeField] private Shutter		m_Shutter;
+	[SerializeField] private Button			m_ShutterButton;
+	[SerializeField] private GameObject		m_ExtraButtonsParent;
+	[SerializeField] private GameObject		m_Scanner;
 
 	private bool m_AllowActions = false;
 
@@ -48,7 +50,7 @@ public class ButtonManager : MonoBehaviour
 	public void ButtonExit()
 	{
 		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.GunShot );
-		SceneManager.LoadScene( 0 );
+		GameManager.Instance.LoadLevel( 0, 1.0f );
 		// Todo:: add fade to black transition
 	}
 
@@ -90,6 +92,9 @@ public class ButtonManager : MonoBehaviour
 		if ( !m_AllowActions )
 			return;
 
+		m_Scanner.SetActive( true );
+
+		DisableNormalButtons(); // Enable it again once the scan completes
 	}
 
 
@@ -97,11 +102,10 @@ public class ButtonManager : MonoBehaviour
 	{
 		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
 
-		if ( !m_AllowActions )
-			return;
-
-
-		//DisableNormalButtons(); // Enable it again once the scan completes
+		if ( m_ExtraButtonsParent.activeSelf )
+			m_ExtraButtonsParent.SetActive( false );
+		else
+			m_ExtraButtonsParent.SetActive( true );
 	}
 
 	public void ButtonRehab()
@@ -111,8 +115,8 @@ public class ButtonManager : MonoBehaviour
 		if ( !m_AllowActions )
 			return;
 
-
-		//DisableNormalButtons();
+		MaskedManager.Instance.Masked.SetTravelDestination( Masked.EFacility.Rehab );
+		DisableNormalButtons();
 	}
 
 
@@ -123,8 +127,8 @@ public class ButtonManager : MonoBehaviour
 		if ( !m_AllowActions )
 			return;
 
-
-		//DisableNormalButtons();
+		MaskedManager.Instance.Masked.SetTravelDestination( Masked.EFacility.Graveyard );
+		DisableNormalButtons();
 	}
 
 	public void ButtonResearchInstitute() // Should have called it Lab 
@@ -134,8 +138,8 @@ public class ButtonManager : MonoBehaviour
 		if ( !m_AllowActions )
 			return;
 
-
-	//	DisableNormalButtons();
+		MaskedManager.Instance.Masked.SetTravelDestination( Masked.EFacility.Research );
+		DisableNormalButtons();
 	}
 
 
