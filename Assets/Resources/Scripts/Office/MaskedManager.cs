@@ -9,25 +9,18 @@ public class MaskedManager : MonoBehaviour
 	public static MaskedManager Instance => m_Instance;
 
 
-	[SerializeField] private Masked m_Masked;
-	public Masked Masked => m_Masked;
+	[SerializeField] private MaskedSubject m_Masked;
+	public MaskedSubject Masked => m_Masked;
 
 
 	// TODO:: once these fields have been confirmed to work, they don't have to be serializefielded
 	[SerializeField] private Sprite[] m_MaskedBases;
-	[SerializeField] private Sprite[] m_DiceBases;
-	//[SerializeField] private List<Sprite> m_BaseMutated;
-	//[SerializeField] private List<Sprite> m_BaseDice;
 	[SerializeField] private Sprite[] m_FacilityPlantation;
 	[SerializeField] private Sprite[] m_FacilityChamber;
 	[SerializeField] private Sprite[] m_FacilityMixture;
-	[SerializeField] private Sprite[] m_FacilityMutated;
-	[SerializeField] private Sprite[] m_FacilityUnique;
-	[SerializeField] private Sprite[] m_FacilityDice;
 	[SerializeField] private Sprite[] m_AccessoriesMasked;
-	[SerializeField] private Sprite[] m_AccessoriesDice;
 
-	[SerializeField] private List<MaskedInfo> m_MaskedInfos;
+	[SerializeField] private List<MaskedSubjectInfo> m_MaskedInfos;
 
 	private void Awake()
 	{
@@ -40,20 +33,14 @@ public class MaskedManager : MonoBehaviour
 		}
 
 
-		m_MaskedInfos = new List<MaskedInfo>();
-
+		m_MaskedInfos = new List<MaskedSubjectInfo>();
 
 
 		m_MaskedBases			= Resources.LoadAll<Sprite>( "Art/Masked/Bases/Masked" );
-		m_DiceBases				= Resources.LoadAll<Sprite>( "Art/Masked/Bases/Dice" );
 		m_FacilityPlantation	= Resources.LoadAll<Sprite>( "Art/Masked/FacilityColors/Plantation" );
 		m_FacilityChamber		= Resources.LoadAll<Sprite>( "Art/Masked/FacilityColors/Chamber"  );
 		m_FacilityMixture		= Resources.LoadAll<Sprite>( "Art/Masked/FacilityColors/Mixture"  );
-		m_FacilityMutated		= Resources.LoadAll<Sprite>( "Art/Masked/FacilityColors/Mutated"  );
-		m_FacilityUnique		= Resources.LoadAll<Sprite>( "Art/Masked/FacilityColors/Unique"  );
-		m_FacilityDice			= Resources.LoadAll<Sprite>( "Art/Masked/FacilityColors/Dice" );
 		m_AccessoriesMasked		= Resources.LoadAll<Sprite>( "Art/Masked/Accessories/Masked" );
-		m_AccessoriesDice		= Resources.LoadAll<Sprite>( "Art/Masked/Accessories/Dice" );
 	}
 
 	private void Start()
@@ -67,17 +54,20 @@ public class MaskedManager : MonoBehaviour
 	{
 		m_MaskedInfos.Clear();
 
+
+		int DailyMaskAmount = DayManager.Instance.GetCurrentDay().m_AmountTotalMasks;
+
 		// Fill entire list with regular masks
-		while ( m_MaskedInfos.Count < DayManager.Instance.GetCurrentDay().m_AmountTotalMasks )
+		while ( m_MaskedInfos.Count < DailyMaskAmount )
 		{
-			MaskedInfo NewMaskedInfo = ScriptableObject.CreateInstance<MaskedInfo>(); // This method is used rather than typing "new" since this is how Unity suggests it
+			MaskedSubjectInfo NewMaskedInfo = ScriptableObject.CreateInstance<MaskedSubjectInfo>(); // This method is used rather than typing "new" since this is how Unity suggests it
 
 			int MaskDecider = Random.Range( 0, 2 );
 
 			if ( MaskDecider == 0 )
 			{
 				NewMaskedInfo.m_Value				= 1;
-				NewMaskedInfo.m_IntentedFacility	= Masked.EFacility.Plantation;
+				NewMaskedInfo.m_IntentedFacility	= MaskedSubject.EFacility.Plantation;
 				NewMaskedInfo.m_BaseSprite			= m_MaskedBases[ Random.Range(0, m_MaskedBases.Length) ];
 				NewMaskedInfo.m_FacilitySprite		= m_FacilityPlantation[ Random.Range(0, m_FacilityPlantation.Length) ];
 				NewMaskedInfo.m_AccessorySprite		= m_AccessoriesMasked[ Random.Range(0, m_AccessoriesMasked.Length) ];
@@ -85,7 +75,7 @@ public class MaskedManager : MonoBehaviour
 			else
 			{
 				NewMaskedInfo.m_Value				= 1;
-				NewMaskedInfo.m_IntentedFacility	= Masked.EFacility.Chamber;
+				NewMaskedInfo.m_IntentedFacility	= MaskedSubject.EFacility.Chamber;
 				NewMaskedInfo.m_BaseSprite			= m_MaskedBases[ Random.Range(0, m_MaskedBases.Length) ];
 				NewMaskedInfo.m_FacilitySprite		= m_FacilityChamber[ Random.Range(0, m_FacilityChamber.Length) ];
 				NewMaskedInfo.m_AccessorySprite		= m_AccessoriesMasked[ Random.Range(0, m_AccessoriesMasked.Length) ];
@@ -130,7 +120,7 @@ public class MaskedManager : MonoBehaviour
 		}
 
 		m_Masked.SetMaskedInfo( m_MaskedInfos[ m_MaskedInfos.Count - 1 ] );
-		m_Masked.SetTravelDestination( Masked.EFacility.Office );
+		m_Masked.SetTravelDestination( MaskedSubject.EFacility.Office );
 
 		m_MaskedInfos.RemoveAt( m_MaskedInfos.Count - 1 );
 

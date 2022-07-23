@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-	[SerializeField] private FadeElement	m_ScreenFade;
+	[SerializeField] private FadeImage	m_ScreenFade;
 	[SerializeField] private AudioSource	m_StartGameSound;
 
 	public void ButtonStartGame()

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1051647414921089299}
   - component: {fileID: 1051647414921089310}
   - component: {fileID: 1051647414921089309}
-  - component: {fileID: 1051647414921089308}
+  - component: {fileID: 8594257977038635399}
   m_Layer: 5
   m_Name: BlackScreenFade
   m_TagString: Untagged
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1051647414921089308
+--- !u!114 &8594257977038635399
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,9 +85,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1051647414921089298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e2d4878d38b0d64fa10ad54a11a1d7e, type: 3}
+  m_Script: {fileID: 11500000, guid: 4eead442bb837ae40b56dd04b4e098b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FadeDuration: 4
-  m_Delay: 0
+  m_StartOnPlay: 1
+  m_FadeDuration: 3
+  m_Delay: 1
   m_FadeOut: 1
+  m_EODF: {fileID: 0}

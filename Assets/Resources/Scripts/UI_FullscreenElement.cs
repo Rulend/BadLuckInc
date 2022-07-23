@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_FullscreenElement : FadeElement
+public class UI_FullscreenElement : FadeImage
 {
 	[SerializeField] private EndOfDayFixer m_EODF;
 

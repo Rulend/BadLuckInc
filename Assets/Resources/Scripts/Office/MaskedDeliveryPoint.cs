@@ -6,7 +6,7 @@ public class MaskedDeliveryPoint : MonoBehaviour
 {
 	// A class used to check if the masked sent to the correct facility.
 
-	[SerializeField] private Masked.EFacility m_Facility;
+	[SerializeField] private MaskedSubject.EFacility m_Facility;
 
 	private void OnTriggerEnter2D( Collider2D _MaskedCollider )
 	{
@@ -14,7 +14,7 @@ public class MaskedDeliveryPoint : MonoBehaviour
 
 		ScoreManager.Instance.UpdateDailyCounter();
 
-		if ( _MaskedCollider.GetComponent<Masked>().IntentedFacility != m_Facility ) // If they were sent to the wrong facility
+		if ( _MaskedCollider.GetComponent<MaskedSubject>().IntentedFacility != m_Facility ) // If they were sent to the wrong facility
 			// TODO:: Make a check here to see if the amount of daily mistakes has exceeded amount X, if it has, insta lose or get fired from your job.
 			ScoreManager.Instance.UpdateDailyMistakes();
 

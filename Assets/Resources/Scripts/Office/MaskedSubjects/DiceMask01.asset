@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac2d894e183c2494683a7307ece1929e, type: 3}
+  m_Name: DiceMask01
+  m_EditorClassIdentifier: 
+  m_Value: 0
+  m_StressLevel: 0
+  m_ThreatLevel: 0
+  m_IntentedFacility: 0
+  m_BaseSprite: {fileID: 21300000, guid: 04ff3b8671e7e8640ae0ab97e57844c6, type: 3}
+  m_FacilitySprite: {fileID: 21300000, guid: 0439a6c8655988a44bf40ef157fcb7ab, type: 3}
+  m_AccessorySprite: {fileID: 21300000, guid: e0fdb3af5b9254349964095389c7088e, type: 3}

@@ -12,7 +12,7 @@ public class DayManager : MonoBehaviour
 	[System.Serializable]
 	public struct Day // A day starts when the 
 	{
-		public List<Masked.SpecialMasked> m_SpecialMasks;
+		public List<MaskedSubject.SpecialMasked> m_SpecialMasks;
 
 		public float	m_DayDuration;
 		public int		m_AmountRandomDiceMasks;

@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Masked : MonoBehaviour
+public class MaskedSubject : MonoBehaviour
 {
 	public enum EFacility
 	{
+		Undecided		,
 		Office			,	// The office where the player works
-		Chamber			,	// The chamber facility
 		Plantation		,	// The plantation facility
-		Research		,	// The research facility
-		Graveyard		,	// The graveyard
+		Chamber			,	// The chamber facility
 		Rehab			,	// The rehabilitation facility
+		Graveyard		,	// The graveyard
+		Research		,	// The research facility
 	}
 
 	[System.Serializable]
 	public class SpecialMasked // xd wanted this to be a struct but structs dont have field initializers in this version of C#
 	{
-		public MaskedInfo	m_MaskedInfo;
-		public int			m_IntendedLocation = -1; // Set this to -1 if not wanted
+		public MaskedSubjectInfo	m_MaskedInfo;
+		public int					m_IntendedLocation = -1; // Set this to -1 if not wanted
 	}
 
 
@@ -38,10 +39,12 @@ public class Masked : MonoBehaviour
 	[SerializeField] private Transform m_ResearchLab;
 
 
-	private MovingCollisionCheckObject m_rMovingComponent;
-	private MaskedInfo	m_MaskedInfo;
+	private MovingCollisionCheckObject	m_rMovingComponent;
+	private MaskedSubjectInfo			m_MaskedInfo;
 
 	public EFacility	IntentedFacility => m_MaskedInfo.m_IntentedFacility; // The intended facility of the masked.
+	public int			StressLevel => m_MaskedInfo.m_StressLevel; // The stress level.
+	public int			ThreatLevel => m_MaskedInfo.m_ThreatLevel; // The threat level.
 
 
 	private void Awake()
@@ -50,7 +53,7 @@ public class Masked : MonoBehaviour
 	}
 
 
-	public void SetMaskedInfo( MaskedInfo _NewMaskedInfo )
+	public void SetMaskedInfo( MaskedSubjectInfo _NewMaskedInfo )
 	{
 		m_MaskedInfo		= _NewMaskedInfo;
 
@@ -91,4 +94,7 @@ public class Masked : MonoBehaviour
 
 		m_rMovingComponent.SetTargetTransform( NewTargetTransform );
 	}
+
+
+
 }

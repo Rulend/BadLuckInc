@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 
 // Put this component on the element that has the image.
-public class FadeElement : MonoBehaviour
+public class FadeImage : MonoBehaviour
 {
 	[SerializeField]	private bool			m_StartOnPlay		= false;
 	[SerializeField]	private float			m_FadeDuration		= 1.0f;
