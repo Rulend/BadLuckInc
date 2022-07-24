@@ -16,11 +16,26 @@ public class MaskedSubject : MonoBehaviour
 		Research		,	// The research facility
 	}
 
+
+
+	public enum ESubjectWorth
+	{
+		Regular		,
+		Mixture		,
+		Infected	,
+		Unique		,
+		Observer	,
+		Dice		,
+		OverSeer	,
+	}
+
+
+
 	[System.Serializable]
-	public class SpecialMasked // xd wanted this to be a struct but structs dont have field initializers in this version of C#
+	public struct SpecialMasked // xd wanted this to be a struct but structs dont have field initializers in this version of C#
 	{
 		public MaskedSubjectInfo	m_MaskedInfo;
-		public int					m_IntendedLocation = -1; // Set this to -1 if not wanted
+		public int					m_EncounterNumber; // When to encounter this mask.
 	}
 
 
@@ -42,9 +57,10 @@ public class MaskedSubject : MonoBehaviour
 	private MovingCollisionCheckObject	m_rMovingComponent;
 	private MaskedSubjectInfo			m_MaskedInfo;
 
-	public EFacility	IntentedFacility => m_MaskedInfo.m_IntentedFacility; // The intended facility of the masked.
-	public int			StressLevel => m_MaskedInfo.m_StressLevel; // The stress level.
-	public int			ThreatLevel => m_MaskedInfo.m_ThreatLevel; // The threat level.
+	public ESubjectWorth	Value => m_MaskedInfo.m_Value; // The value of the subject.
+	public EFacility		IntentedFacility => m_MaskedInfo.m_IntentedFacility; // The intended facility of the subject.
+	public int				StressLevel => m_MaskedInfo.m_StressLevel; // The stress level.
+	public int				ThreatLevel => m_MaskedInfo.m_ThreatLevel; // The threat level.
 
 
 	private void Awake()
@@ -96,5 +112,46 @@ public class MaskedSubject : MonoBehaviour
 	}
 
 
+	// Adjusts the stress level by adding _Adjustment to it. _Adjustment can be negative to decrease stress levels.
+	// Stress level will also affect threat level.
+	public void AdjustStressLevel( int _Adjustment )
+	{
+		// TODO:: Create an enum or something instead of hardcoding 0 and 8
+
+		int StressPreAdjustment = m_MaskedInfo.m_StressLevel;
+
+		m_MaskedInfo.m_StressLevel += _Adjustment;
+
+		if ( m_MaskedInfo.m_StressLevel > 8 )
+			m_MaskedInfo.m_StressLevel = 8;
+		else if ( m_MaskedInfo.m_StressLevel < 0 )
+			m_MaskedInfo.m_StressLevel = 0;
+
+
+		if ( StressPreAdjustment != m_MaskedInfo.m_StressLevel )
+		{
+			if ( m_MaskedInfo.m_StressLevel > StressPreAdjustment )
+			{
+				int a = m_MaskedInfo.m_StressLevel % 3; // Stress level changes color at 3 level intervals, so thats when the threat level should be affected too
+				int b = StressPreAdjustment % 3;
+
+				if ( a <= b )
+					m_MaskedInfo.m_ThreatLevel++;
+
+				// Check if dialogue has been exhausted.
+				//if (  )
+				{
+					if ( ThreatLevel > 1 )
+						if ( m_MaskedInfo.m_Value == MaskedSubject.ESubjectWorth.Infected )
+							Debug.Log( "Starting Kill sequence." );
+				}
+			}
+			else
+			{
+				//if ( m_MaskedInfo.m_StressLevel % 2 <= StressPreAdjustment % 2 )
+				//	m_MaskedInfo.m_StressLevel--;
+			}
+		}
+	}
 
 }

@@ -19,8 +19,11 @@ public class ButtonManager : MonoBehaviour
 	public delegate void LocationButtonPressedDelegate(); // Changing my naming convention for delegates after understanding more about them. Might conflict with other delegate names. TODO: Fix that.
 	public event LocationButtonPressedDelegate LocationButtonPressedEvent;
 
+	private HashSet<LocationButtonPressedDelegate> m_OneTimeFunctionCalls;
 	private bool m_AllowActions = false;
-	private List<LocationButtonPressedDelegate> m_OneTimeFunctionCalls;
+	private bool m_AllowTalking = true;
+
+
 
 	private void Awake()
 	{
@@ -32,7 +35,7 @@ public class ButtonManager : MonoBehaviour
 			Destroy( gameObject );
 		}
 
-		m_OneTimeFunctionCalls = new List<LocationButtonPressedDelegate>();
+		m_OneTimeFunctionCalls = new HashSet<LocationButtonPressedDelegate>();
 	}
 
 	private void Start()
@@ -49,10 +52,12 @@ public class ButtonManager : MonoBehaviour
 		m_ShutterButton.interactable = false;
 	}
 
+
 	public void ButtonLockShutter()
 	{
 		m_Shutter.Activate();
 	}
+
 
 	// This is for the gun, which was supposed to do something else, but for now it will be the exit button.
 	public void ButtonExit()
@@ -74,6 +79,7 @@ public class ButtonManager : MonoBehaviour
 		ButtonPressedFollowup();
 	}
 
+
 	public void ButtonChamber()
 	{
 		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
@@ -86,12 +92,14 @@ public class ButtonManager : MonoBehaviour
 		ButtonPressedFollowup();
 	}
 
+
 	public void ButtonGun()
 	{
 		if ( !m_AllowActions )
 			return;
 
 	}
+
 
 	public void ButtonScan()
 	{
@@ -102,11 +110,12 @@ public class ButtonManager : MonoBehaviour
 
 		m_Scanner.SetActive( true );
 
-		ButtonPressedFollowup(); // Enable it again once the scan completes
+		DisableNormalButtons(); // Enabled again from Scanner.cs, when the scan has completed.
 
 		m_FadeGraphicElements.InstantOut();
-		LocationButtonPressedEvent += m_FadeGraphicElements.FadeOut;
-		m_OneTimeFunctionCalls.Add( m_FadeGraphicElements.FadeOut );
+
+		if ( m_OneTimeFunctionCalls.Add( m_FadeGraphicElements.FadeOut ) ) // Add returns true if FadeOut is not already in the hashset
+			LocationButtonPressedEvent += m_FadeGraphicElements.FadeOut;
 	}
 
 
@@ -119,6 +128,7 @@ public class ButtonManager : MonoBehaviour
 		else
 			m_ExtraButtonsParent.SetActive( true );
 	}
+
 
 	public void ButtonRehab()
 	{
@@ -143,6 +153,7 @@ public class ButtonManager : MonoBehaviour
 		ButtonPressedFollowup();
 	}
 
+
 	public void ButtonResearchInstitute() // Should have called it Lab 
 	{
 		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
@@ -154,21 +165,32 @@ public class ButtonManager : MonoBehaviour
 		ButtonPressedFollowup();
 	}
 
+
+	public void ButtonTalk()
+	{
+		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
+
+		if ( m_AllowTalking )
+		{
+			m_AllowTalking = DialogueManager.Instance.ProgressConversation();
+			//MaskedManager.Instance.Masked.AdjustStressLevel( 1 );
+			//m_Scanner.GetComponent<Scanner>().UpdateScannerDisplay( MaskedManager.Instance.Masked );
+		}
+	}
+
+
+
+
 	private void ButtonPressedFollowup()
 	{
 		if ( LocationButtonPressedEvent != null )
 		{
 			LocationButtonPressedEvent.Invoke();
 
-			int ArraySize = LocationButtonPressedEvent.GetInvocationList().Length;
+			foreach ( LocationButtonPressedDelegate CurrentDelegate in m_OneTimeFunctionCalls )
+				LocationButtonPressedEvent -= CurrentDelegate;
 
-			for ( int DelegateIndex = 0; DelegateIndex < ArraySize; ++DelegateIndex )// Remove all one-time events
-			{
-				LocationButtonPressedDelegate CurrentDelegate = (LocationButtonPressedDelegate)LocationButtonPressedEvent.GetInvocationList()[ DelegateIndex ];
-
-				if ( CurrentDelegate == m_OneTimeFunctionCalls[ DelegateIndex ] )
-					LocationButtonPressedEvent -= CurrentDelegate;
-			}
+			m_OneTimeFunctionCalls.Clear();
 		}
 
 		DisableNormalButtons();
@@ -178,12 +200,22 @@ public class ButtonManager : MonoBehaviour
 	public void DisableNormalButtons()
 	{
 		m_AllowActions = false;
+		m_AllowTalking = false;
 	}
+
 
 	public void EnableNormalButtons()
 	{
 		m_AllowActions = true;
 	}
+
+
+	public void EnableAllButtons()
+	{
+		m_AllowActions = true;
+		m_AllowTalking = true;
+	}
+
 
 	public void EnableShutterButton()
 	{

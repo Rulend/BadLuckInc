@@ -21,6 +21,8 @@ public class MaskedManager : MonoBehaviour
 	[SerializeField] private Sprite[] m_AccessoriesMasked;
 
 	[SerializeField] private List<MaskedSubjectInfo> m_MaskedInfos;
+	[SerializeField] private Conversation m_RegularConvo;
+	[SerializeField] private Conversation m_InfectedConvo;
 
 	private void Awake()
 	{
@@ -66,43 +68,34 @@ public class MaskedManager : MonoBehaviour
 
 			if ( MaskDecider == 0 )
 			{
-				NewMaskedInfo.m_Value				= 1;
 				NewMaskedInfo.m_IntentedFacility	= MaskedSubject.EFacility.Plantation;
-				NewMaskedInfo.m_BaseSprite			= m_MaskedBases[ Random.Range(0, m_MaskedBases.Length) ];
 				NewMaskedInfo.m_FacilitySprite		= m_FacilityPlantation[ Random.Range(0, m_FacilityPlantation.Length) ];
-				NewMaskedInfo.m_AccessorySprite		= m_AccessoriesMasked[ Random.Range(0, m_AccessoriesMasked.Length) ];
 			}
 			else
 			{
-				NewMaskedInfo.m_Value				= 1;
 				NewMaskedInfo.m_IntentedFacility	= MaskedSubject.EFacility.Chamber;
-				NewMaskedInfo.m_BaseSprite			= m_MaskedBases[ Random.Range(0, m_MaskedBases.Length) ];
 				NewMaskedInfo.m_FacilitySprite		= m_FacilityChamber[ Random.Range(0, m_FacilityChamber.Length) ];
-				NewMaskedInfo.m_AccessorySprite		= m_AccessoriesMasked[ Random.Range(0, m_AccessoriesMasked.Length) ];
 			}
+
+			NewMaskedInfo.m_Value			= MaskedSubject.ESubjectWorth.Regular;
+			NewMaskedInfo.m_StressLevel		= 0;
+			NewMaskedInfo.m_ThreatLevel		= 0;
+			NewMaskedInfo.m_Value			= MaskedSubject.ESubjectWorth.Regular;
+			NewMaskedInfo.m_BaseSprite		= m_MaskedBases[ Random.Range( 0, m_MaskedBases.Length ) ];
+			NewMaskedInfo.m_AccessorySprite = m_AccessoriesMasked[ Random.Range( 0, m_AccessoriesMasked.Length ) ];
+
 
 			m_MaskedInfos.Add( NewMaskedInfo );
 		}
 
 		// Add special masks
-		//foreach ( SpecialMasked CurrentSpecial in m_Days[ m_CurrentRound ].m_SpecialMasks )
-		//{
-		//	if ( CurrentSpecial.m_IntendedLocation > -1 )
-		//	{
-		//		if ( m_MaskedInfos[ CurrentSpecial.m_IntendedLocation ].m_Value > 1 )
-		//		{
-		//			Debug.LogError( $"On round { m_CurrentRound } there are multiple special masks with the same IntendedLocation. Randomizing position." );
-		//		}
-		//		else
-		//		{
-		//			m_MaskedInfos[ CurrentSpecial.m_IntendedLocation ] = CurrentSpecial.m_MaskedInfo;
-		//		}
-		//	}
-		//	else // IntendedLocation was left at -1, so randomize position in list
-		//	{
+		foreach ( MaskedSubject.SpecialMasked CurrentSpecial in DayManager.Instance.GetCurrentDay().m_SpecialMasks )
+		{
+			if ( m_MaskedInfos[ m_MaskedInfos.Count - CurrentSpecial.m_EncounterNumber ].m_Value > MaskedSubject.ESubjectWorth.Regular ) // If there is already another special mask in that location:
+				Debug.LogError( $"Two special masks were given the same encounter number: { m_MaskedInfos[ CurrentSpecial.m_EncounterNumber ].m_Value}. Fix this in the inspector, in the DayManager." );
 
-		//	}
-		//}
+			m_MaskedInfos[ m_MaskedInfos.Count - CurrentSpecial.m_EncounterNumber ] = CurrentSpecial.m_MaskedInfo;
+		}
 
 		SendNewMask();
 	}
@@ -122,8 +115,16 @@ public class MaskedManager : MonoBehaviour
 		m_Masked.SetMaskedInfo( m_MaskedInfos[ m_MaskedInfos.Count - 1 ] );
 		m_Masked.SetTravelDestination( MaskedSubject.EFacility.Office );
 
+		// Removing from the back is way faster than removing from the front and reorganizing the entire list.
+		// To make sure the special masks still arive in the correct order, they are inserted from the back in GenerateMasks.
 		m_MaskedInfos.RemoveAt( m_MaskedInfos.Count - 1 );
 
-		// Removing from the back is way faster, so in GenerateMasks we reverse the order of everything to make it line up.
+
+		// TODO:: Find a way around this stupid shit; in worst case get all the conversations in the folder and add them to a dictionary. Huge amount of wasted ram, so find something better than that pls.
+		if ( m_Masked.Value == MaskedSubject.ESubjectWorth.Regular )
+			DialogueManager.Instance.AddConversation( m_RegularConvo );
+		else
+			DialogueManager.Instance.AddConversation( m_InfectedConvo );
+
 	}
 }

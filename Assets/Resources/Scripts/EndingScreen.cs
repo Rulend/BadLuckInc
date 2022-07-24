@@ -83,12 +83,10 @@ public class EndingScreen : MonoBehaviour
 
 				if ( AddedChar != ' ' )
 				{
-					m_LetterCooldownTimeLeft = m_LetterCooldownDuration;
+					m_LetterCooldownTimeLeft = AddedChar == '.' ? m_LetterCooldownDuration * 3.0f : m_LetterCooldownDuration;
 
 					AudioManager.Instance.PlayVoice( AudioManager.ESoundVoice.BadLuckInc );
 				}
-				else if ( AddedChar == '.' )
-					m_LetterCooldownTimeLeft = m_LetterCooldownDuration * 3.0f;
 
 				m_CurrentText.text += AddedChar;
 			}

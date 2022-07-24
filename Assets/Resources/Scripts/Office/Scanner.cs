@@ -129,7 +129,7 @@ public class Scanner : MonoBehaviour
 				if ( m_ShrinkGrowProgress > m_ShrinkGrowDuration )
 				{
 					gameObject.SetActive( false ); // TODO: Make other buttons pressable again, bring up dialogue options, etc.
-					ButtonManager.Instance.EnableNormalButtons();
+					ButtonManager.Instance.EnableAllButtons();
 					m_ShrinkGrowProgress = 0.0f;
 
 					UpdateScannerDisplay( MaskedManager.Instance.Masked );

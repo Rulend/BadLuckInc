@@ -53,12 +53,13 @@ public class EndOfDayFixer : MonoBehaviour
 		m_TextArrays[ 2 ] = m_Slide3Texts;
 
 
-		m_EmployeeNumber = Random.Range( 0, 1000 );
+		m_EmployeeNumber = 722;
 
-		m_RandomEvents = new string[ 3 ];
-		m_RandomEvents[ 0 ] = "because you forgot to take out the trash yesterday, ";
-		m_RandomEvents[ 1 ] = "because you didn't cry when watching that romantic movie a month ago, ";
-		m_RandomEvents[ 2 ] = "because you waited to buy clothes on sale, ";
+		m_RandomEvents = new string[ 4 ];
+		m_RandomEvents[ 0 ] = "You forgot to take out the trash yesterday.";
+		m_RandomEvents[ 1 ] = "You didn't cry when watching that romantic movie a month ago.";
+		m_RandomEvents[ 2 ] = "You waited to buy clothes until a sale.";
+		m_RandomEvents[ 3 ] = "Your Mahinuki figure arrived yesterday.";
 
 		m_StringArrays	= new string[ 3 ][];
 	}
@@ -89,13 +90,13 @@ public class EndOfDayFixer : MonoBehaviour
 		else
 			m_Slide2Messages[ 0 ] = $"As a punishment for making { DailyMistakes } mistakes, you have been entered into the credits adjustment system.";
 
-		m_Slide2Messages[ 1 ] = "The system states that " + m_RandomEvents[ Random.Range( 0, m_RandomEvents.Length ) ] + $"you have been awarded { RandomCreditReward } credits. Hooray.";
+		m_Slide2Messages[ 1 ] = $"You have been awarded { RandomCreditReward } credits. Hooray. Reason being:" + m_RandomEvents[ Random.Range( 0, m_RandomEvents.Length ) ];
 
 		m_Slide2Messages[ 2 ] = $"After paying your daily rent, employment fees and food costs, you end up at { RemainingCredits } credits.";
 
 
 		m_Slide3Messages = new string[ 1 ];
-		m_Slide3Messages[ 0 ] = "BadLuck Inc thanks you for your service.";
+		m_Slide3Messages[ 0 ] = "BadLuck Inc. thanks you for your service.";
 
 		// Setup needed stuff that needs to be done every time
 		m_StringArrays[ 0 ] = m_Slide1Messages;
@@ -140,7 +141,7 @@ public class EndOfDayFixer : MonoBehaviour
 
 				if ( AddedChar != ' ' )
 				{
-					m_LetterCooldownTimeLeft = m_LetterCooldownDuration;
+					m_LetterCooldownTimeLeft = AddedChar == '.' ? m_LetterCooldownDuration * 3.0f : m_LetterCooldownDuration;
 
 					AudioManager.Instance.PlayVoice( AudioManager.ESoundVoice.BadLuckInc );
 				}

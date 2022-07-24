@@ -15,9 +15,8 @@ public class DayManager : MonoBehaviour
 		public List<MaskedSubject.SpecialMasked> m_SpecialMasks;
 
 		public float	m_DayDuration;
-		public int		m_AmountRandomDiceMasks;
-		public int		m_AmountRandomMutatedMasks;
-		public int		m_AmountRandomMixtureMasks;
+		public int		m_AmountInfectedMasks;
+		public int		m_AmountMixtureMasks;
 		public int		m_AmountTotalMasks;
 	}
 

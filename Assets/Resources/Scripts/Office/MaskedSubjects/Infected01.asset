@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2d894e183c2494683a7307ece1929e, type: 3}
   m_Name: Infected01
   m_EditorClassIdentifier: 
-  m_Value: 0
+  m_Value: 2
   m_StressLevel: 4
   m_ThreatLevel: 2
   m_IntentedFacility: 5
-  m_BaseSprite: {fileID: 0}
-  m_FacilitySprite: {fileID: 0}
-  m_AccessorySprite: {fileID: 0}
+  m_BaseSprite: {fileID: 21300000, guid: ed382c81d006f974a9daa0a24854a11c, type: 3}
+  m_FacilitySprite: {fileID: 21300000, guid: d38c6a82fab31214fae855731cc5f038, type: 3}
+  m_AccessorySprite: {fileID: 21300000, guid: ec5b35ca6143aad4bbe46b071a820f00, type: 3}
