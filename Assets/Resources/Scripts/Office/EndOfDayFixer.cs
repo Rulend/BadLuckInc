@@ -65,6 +65,9 @@ public class EndOfDayFixer : MonoBehaviour
 	}
 
 
+	// When Activate is called on this class, it sets up the messages that appear at the end of the day.
+
+	// TODO:: Make these texts not hard coded, and make them more dynamic, not using plural if there is only 1 of something, etc.
 	public void Activate()
 	{
 		int DailyMistakes = ScoreManager.Instance.DailyMistakes;
@@ -121,13 +124,16 @@ public class EndOfDayFixer : MonoBehaviour
 				CurrentText.text = "";
 		}
 
-
 		enabled = true;
 	}
 
 
 
 	// Update is called once per frame
+	// Does the same thing as the EndingScreen, since I didn't have time to figure out how to make this dynamic and scalable enough (TODO URGENT:: Fix this)
+	// Displays one letter at a time of the current message, until all the messages of the current slide have been shown.
+	// This repeats for all slides. Once all slides have been completed, EndOfDayFixer will start the next day by calling ProgressToNextDay.
+	// If a winning or losing condition have been met will be checked in ProgressToNextDay, which then will trigger the appropriate ending screen. 
 	void Update()
     {
 		// TODO:: Set this up
@@ -167,6 +173,8 @@ public class EndOfDayFixer : MonoBehaviour
     }
 
 
+	// Note: This method is called from a UI-button. That's why it has 0 references.
+	// Shows the next slide if there is one, otherwise progresses to the next day.
 	public void ShowNextSlide()
 	{
 		if ( m_CurrentTextArrayIndex < m_TextArrays.Length - 1 ) // If not all slides have been completed
