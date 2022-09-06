@@ -51,7 +51,7 @@ public class MaskedManager : MonoBehaviour
 	}
 
 
-
+	// Generates random masks for the day; as the theme for this gamejam was Roll of the Dice
 	public void GenerateMasks()
 	{
 		m_MaskedInfos.Clear();
@@ -64,7 +64,7 @@ public class MaskedManager : MonoBehaviour
 		{
 			MaskedSubjectInfo NewMaskedInfo = ScriptableObject.CreateInstance<MaskedSubjectInfo>(); // This method is used rather than typing "new" since this is how Unity suggests it
 
-			int MaskDecider = Random.Range( 0, 2 );
+			int MaskDecider = Random.Range( 0, 2 ); // Decides whether the mask will be going to the plantation or the chamber. In here, it will also be easy to configure other stuff, like if a mask should be suspicious or do weird stuff.
 
 			if ( MaskDecider == 0 )
 			{
@@ -77,6 +77,7 @@ public class MaskedManager : MonoBehaviour
 				NewMaskedInfo.m_FacilitySprite		= m_FacilityChamber[ Random.Range(0, m_FacilityChamber.Length) ];
 			}
 
+			// Set the mask values
 			NewMaskedInfo.m_Value			= MaskedSubject.ESubjectWorth.Regular;
 			NewMaskedInfo.m_StressLevel		= 0;
 			NewMaskedInfo.m_ThreatLevel		= 0;
@@ -88,7 +89,9 @@ public class MaskedManager : MonoBehaviour
 			m_MaskedInfos.Add( NewMaskedInfo );
 		}
 
-		// Add special masks
+		// Add special masks, which are created as separate ScriptableObjects by right clicking->Create->MaskedSubject
+		// These special masks then have to be dragged into the specific day you wish to encounter them in the DayManager.
+		// An encounter number does also have to be given, with 1 meaning encounter number 1 (first).
 		foreach ( MaskedSubject.SpecialMasked CurrentSpecial in DayManager.Instance.GetCurrentDay().m_SpecialMasks )
 		{
 			if ( m_MaskedInfos[ m_MaskedInfos.Count - CurrentSpecial.m_EncounterNumber ].m_Value > MaskedSubject.ESubjectWorth.Regular ) // If there is already another special mask in that location:
@@ -97,18 +100,17 @@ public class MaskedManager : MonoBehaviour
 			m_MaskedInfos[ m_MaskedInfos.Count - CurrentSpecial.m_EncounterNumber ] = CurrentSpecial.m_MaskedInfo;
 		}
 
-		SendNewMask();
+		SendNewMask(); // Send the first mask of the day
 	}
 
 
-
+	// Sends a new mask to the player's office.
 	public void SendNewMask()
 	{
-		if ( m_MaskedInfos.Count == 0 )
+		if ( m_MaskedInfos.Count == 0 ) // If all the masks of the day have been encountered
 		{
-			// TODO:: End the day here.
-			DayManager.Instance.EndDay();
-			ButtonManager.Instance.EnableShutterButton();
+			DayManager.Instance.EndDay();							// End the day
+			OfficeButtonManager.Instance.EnableShutterButton();		// Enable the shutter button so the player can press it and progress to the next day
 			return;
 		}
 
@@ -125,6 +127,5 @@ public class MaskedManager : MonoBehaviour
 			DialogueManager.Instance.AddConversation( m_RegularConvo );
 		else
 			DialogueManager.Instance.AddConversation( m_InfectedConvo );
-
 	}
 }

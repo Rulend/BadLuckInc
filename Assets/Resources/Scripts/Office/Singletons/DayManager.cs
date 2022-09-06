@@ -10,7 +10,7 @@ public class DayManager : MonoBehaviour
 
 
 	[System.Serializable]
-	public struct Day // A day starts when the 
+	public struct Day // A day starts when the shutter is raised.
 	{
 		public List<MaskedSubject.SpecialMasked> m_SpecialMasks;
 
@@ -45,7 +45,7 @@ public class DayManager : MonoBehaviour
 			m_Instance = this;
 		else
 		{
-			Debug.LogError( "More than once instance of DayManager detected. Deleting the extra..." );
+			Debug.LogError( "More than once instance of DayManager detected. Deleting the extra...Hopefully nothing bad happens..hehe" );
 			Destroy( gameObject );
 		}
 
@@ -54,7 +54,8 @@ public class DayManager : MonoBehaviour
 		enabled = false;
 	}
 
-
+	// While running update, the Daymanager will set the time of the clock in the bottom left corner.
+	// This should definitively be added to its own class; TODO:: Fix that.
 	private void Update()
 	{
 		m_DayTimeLeft -= Time.deltaTime;
@@ -96,28 +97,35 @@ public class DayManager : MonoBehaviour
 		enabled = false;
 	}
 
+
+
 	public Day GetCurrentDay()
 	{
 		return m_Days[ m_CurrentDay ];
 	}
 
+
+	// Displays the performance of the completed day.
 	public void StartDisplayDayPerformance()
 	{
 		if ( DayEndDisplayperformanceEvent != null )
 			DayEndDisplayperformanceEvent.Invoke();
 	}
 
+
+	// Progresses to the next day.
+
 	public void ProgressToNextDay()
 	{
 		m_CurrentDay++;
 
-		if ( ScoreManager.Instance.PlayerCredits < 0 )
+		if ( ScoreManager.Instance.PlayerCredits < 0 ) // If the player has negative credits, meaning they made a lot of mistakes or were very unlucky
 		{
 			m_EndingScreen.Activate( m_DefeatSlidesParent );
 			return;
 		}
 
-		if ( m_CurrentDay >= m_Days.Count )
+		if ( m_CurrentDay >= m_Days.Count ) // If the player survived for the specified amount of days, let them win. (TODO:: This should give the default ending, which happens when you don't complete enough events for the true ending or if you don't mess up bad enough for the bad ending)
 		{
 			m_EndingScreen.Activate( m_VictorySlidesParent );
 			return;
@@ -127,7 +135,7 @@ public class DayManager : MonoBehaviour
 		m_DayTimeLeft = m_Days[ m_CurrentDay ].m_DayDuration;
 		m_TimeDisplay.text = "00:00";
 
-		if ( NextDayEvent != null )
+		if ( NextDayEvent != null ) // If there is sometihng subscribed to the next day event, invoke it
 			NextDayEvent.Invoke();
 	}
 }

@@ -5,10 +5,10 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-public class ButtonManager : MonoBehaviour
+public class OfficeButtonManager : MonoBehaviour
 {
-	private static	ButtonManager m_Instance;
-	public static	ButtonManager Instance => m_Instance;
+	private static	OfficeButtonManager m_Instance;
+	public static	OfficeButtonManager Instance => m_Instance;
 
 	[SerializeField] private Shutter					m_Shutter;
 	[SerializeField] private Button						m_ShutterButton;
@@ -44,18 +44,15 @@ public class ButtonManager : MonoBehaviour
 	}
 
 
-	public void ButtonUnlockShutter()
+	// Note: methods with zero references are usually called from a UI button.
+
+	// From the office, called when the button in the bottom left with a hand on it is pressed.
+	public void ButtonToggleShutter()
 	{
 		m_Shutter.Activate();
 
 		ButtonPressedFollowup();
 		m_ShutterButton.interactable = false;
-	}
-
-
-	public void ButtonLockShutter()
-	{
-		m_Shutter.Activate();
 	}
 
 
@@ -67,7 +64,7 @@ public class ButtonManager : MonoBehaviour
 		// Todo:: add fade to black transition
 	}
 
-
+	// Called from the green button in the office.
 	public void ButtonPlantation()
 	{
 		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
@@ -80,6 +77,7 @@ public class ButtonManager : MonoBehaviour
 	}
 
 
+	// Called from the red button in the office.
 	public void ButtonChamber()
 	{
 		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
@@ -93,6 +91,7 @@ public class ButtonManager : MonoBehaviour
 	}
 
 
+	// Is supposed to be called from the gun in the office.
 	public void ButtonGun()
 	{
 		if ( !m_AllowActions )
@@ -101,6 +100,7 @@ public class ButtonManager : MonoBehaviour
 	}
 
 
+	// Is called from the small blue button with a magnifying glass on it in the office.
 	public void ButtonScan()
 	{
 		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
@@ -119,6 +119,7 @@ public class ButtonManager : MonoBehaviour
 	}
 
 
+	// Called from the cyan button in the office; has an arrow on it.
 	public void ButtonExtra()
 	{
 		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
@@ -130,6 +131,7 @@ public class ButtonManager : MonoBehaviour
 	}
 
 
+	// Called from the orange button in the office; has a hammer and nails on it
 	public void ButtonRehab()
 	{
 		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
@@ -142,6 +144,7 @@ public class ButtonManager : MonoBehaviour
 	}
 
 
+	// Called from the purple button in the office; has a skull on it.
 	public void ButtonGraveYard()
 	{
 		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
@@ -154,6 +157,7 @@ public class ButtonManager : MonoBehaviour
 	}
 
 
+	// Called from the black button in the office; has an icon depicting a lab-glass
 	public void ButtonResearchInstitute() // Should have called it Lab 
 	{
 		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
@@ -166,6 +170,7 @@ public class ButtonManager : MonoBehaviour
 	}
 
 
+	// Called from the white button in the office, should have a speech bubble on it.
 	public void ButtonTalk()
 	{
 		AudioManager.Instance.PlaySoundEffect( AudioManager.ESoundEnvironment.ButtonPress );
